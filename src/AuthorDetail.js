@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import AddBookModal from "./AddBookModal";
 // Components
 import BookTable from "./BookTable";
 import Loading from "./Loading";
@@ -9,11 +9,20 @@ import { connect } from "react-redux";
 import * as actionCreators from "./store/actions/index";
 
 class AuthorDetail extends Component {
+  state = {
+    open: false
+  };
+
+  onOpenModal = () => this.setState({ open: true });
+
+  onCloseModal = () => this.setState({ open: false });
+
   componentDidMount() {
     this.props.getAuthor(this.props.match.params.authorID);
   }
 
   render() {
+    const { open } = this.state;
     if (this.props.loading) {
       return <Loading />;
     } else {
@@ -30,6 +39,8 @@ class AuthorDetail extends Component {
             />
           </div>
           <BookTable books={author.books} />
+
+          <AddBookModal closeModal={this.onCloseModal} />
         </div>
       );
     }
